@@ -3,7 +3,8 @@
 const commands = {
 	init: require("./Init"),
 	install: require("./Install"),
-	addmod: require("./AddMod")
+	addmod: require("./AddMod"),
+	update: require("./Update")
 };
 
 exports.exists = (cmd) => {
