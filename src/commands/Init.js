@@ -35,15 +35,24 @@ const PROPS = [
 		transformer: (s) => { return s; }
 	},
 	{
-		"id": "mcVersion",
-		"question": "mc version: ",
+		id: "mcVersion",
+		question: "mc version: ",
 		validator: (s, callback) => { MC.isValidVersion(s, callback); },
 		transformer: (s) => { return s; }
 	},
 	{
-		"id": "forgeVersion",
-		"question": "forge version (empty for none): ",
-		validator: (s, callback) => { Forge.isValidVersion(s, callback); },
+		id: "forgeVersion",
+		question: "forge version (empty for none): ",
+		validator: (s, callback) => { 
+			if (s) Forge.isValidVersion(s, callback);
+			else callback(true);
+		},
+		transformer: (s) => { return s; }
+	},
+	{
+		id: "overrideURL",
+		question: "override download URL: ",
+		validator: (s, callback) => { callback(true); },
 		transformer: (s) => { return s; }
 	}
 ];
@@ -74,28 +83,3 @@ function get(rl, obj, callback) {
 		obj[prop.id] = answer;
 	}, callback);
 }
-
-// function get(i, rl, config, callback) {
-// 	if (i < PROPS.length) {
-// 		var prop = PROPS[i];
-// 		question(rl, prop.question, prop.validator, (answer) => {
-// 			config[prop.id] = answer;
-// 			get(i + 1, rl, config, callback);
-// 		});
-
-// 	} else {
-// 		callback();
-// 	}
-// }
-
-// function question(rl, q, validator, callback) {
-// 	rl.question(q, (answer) => {
-// 		validator(answer, (valid) => {
-// 			if (valid) {
-// 				callback(answer);
-// 			} else {
-// 				question(rl, q, validator, callback);
-// 			}
-// 		});
-// 	});
-// }
