@@ -1,0 +1,23 @@
+{
+  "name": "mpm",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/MPM.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ModPackManager/mpm-cli.git"
+  },
+  "author": "shadowfacts",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ModPackManager/mpm-cli/issues"
+  },
+  "homepage": "https://github.com/ModPackManager/mpm-cli#readme",
+  "dependencies": {
+    "request": "^2.71.0",
+    "semver": "^5.1.0"
+  }
+}
