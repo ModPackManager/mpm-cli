@@ -5,7 +5,6 @@ const path = require("path");
 const request = require("request");
 const readline = require("readline");
 
-const Errors = require("../Errors");
 const InputUtils = require("../util/InputUtils");
 const StrategyManager = require("../strategy/StrategyManager");
 
@@ -41,7 +40,7 @@ module.exports = (args) => {
 	fs.exists("modpack.json", (exists) => {
 		if (!exists) {
 			console.error("Cannot add mod to nonexistent modpack manifest");
-			process.exit(Errors.NO_MANIFEST);
+			process.exit(1);
 		}
 
 		var questions = PROPS.slice(0);
