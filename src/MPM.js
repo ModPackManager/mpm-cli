@@ -16,7 +16,7 @@ program
 program
 	.command("install [modpack]")
 	.description("Install [modpack] to [dir]")
-	.option("-s, --side [side]", "If specified, server version will be installed, client is assumed if not specified")
+	.option("-s, --server", "Install the server version (skip client only mods)")
 	.option("-d, --dir [dir]", "Where to install the modpack")
 	.action(require("./commands/Install"));
 
