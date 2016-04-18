@@ -5,6 +5,7 @@ const path = require("path");
 const readline = require("readline");
 const semver = require("semver");
 
+const MiscUtils = require("../util/MiscUtils");
 const InputUtils = require("../util/InputUtils");
 const MC = require("../util/MC");
 const Forge = require("../util/Forge");
@@ -57,9 +58,7 @@ const PROPS = [
 	}
 ];
 
-module.exports = (args) => {
-	const jsonPath = "modpack.json";
-
+module.exports = () => {
 	const config = {};
 
 	const rl = readline.createInterface({
@@ -72,9 +71,11 @@ module.exports = (args) => {
 
 		config.mods = [];
 
-		fs.writeFile(jsonPath, JSON.stringify(config, null, 4), () => {
-			console.log("Initialized %s", jsonPath);
-		})
+		MiscUtils.getCacheFile(path.join("registry", "packs", config.id + ".json"), (f) => {
+			fs.writeFile(f, JSON.stringify(config, null, 4), () => {
+				console.log("Initialized %s", f);
+			})
+		});
 	});
 };
 

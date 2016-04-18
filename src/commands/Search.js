@@ -5,14 +5,8 @@ const path = require("path");
 
 const MiscUtils = require("../util/MiscUtils");
 
-module.exports = (args) => {
-
-	if (args.length == 0) {
-		console.error("Missing required argument");
-		process.exit(1);
-	}
-
-	console.log("Results for %s:", args[0]);
+module.exports = (query) => {
+	console.log("Results for %s:", query);
 
 	MiscUtils.getCacheFile(path.join("registry", "packs"), (f) => {
 
@@ -24,7 +18,7 @@ module.exports = (args) => {
 
 					const pack = JSON.parse(data.toString());
 
-					if (pack.id.includes(args[0]) || pack.displayName.includes(args[0])) {
+					if (pack.id.includes(query) || pack.displayName.includes(query)) {
 						console.log("%s (%s) @ %s", pack.displayName, pack.id, pack.version);
 					}
 

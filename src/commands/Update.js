@@ -6,7 +6,7 @@ const Git = require("nodegit");
 
 const MiscUtils = require("../util/MiscUtils");
 
-module.exports = (args) => {
+module.exports = () => {
 	MiscUtils.getCacheFile("registry", (f) => {
 		var repository;
 		Git.Repository.open(f)

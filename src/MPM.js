@@ -4,27 +4,36 @@ const fs = require("fs");
 const path = require("path");
 const request = require("request");
 
-const CommandManager = require("./commands/CommandManager");
+const program = require("commander");
 
-function mpm(args) {
+program.version("0.1.0");
 
-	process.title = "mpm";
+program
+	.command("init")
+	.description("Initialize a new modpack and open it using $EDITOR")
+	.action(require("./commands/Init"));
 
-	if (args.length == 0) {
-		// TODO: help
-		console.error("Command required");
-		process.exit(1);
-	}
+program
+	.command("install [modpack]")
+	.description("Install [modpack] to [dir]")
+	.option("-s, --side [side]", "If specified, server version will be installed, client is assumed if not specified")
+	.option("-d, --dir [dir]", "Where to install the modpack")
+	.action(require("./commands/Install"));
 
-	const cmd = args[0];
+program
+	.command("addmod [modpack]")
+	.description("Add a mod to [modpack]")
+	.action(require("./commands/AddMod"));
 
-	if (!CommandManager.exists(cmd)) {
-		console.error("Invalid command %s", cmd);
-		process.exit(1);
-	}
+program
+	.command("search [query]")
+	.description("Search for [query] in the local modpack registry")
+	.action(require("./commands/Search"));
 
-	CommandManager.handle(cmd, args.slice(1));
+program
+	.command("update")
+	.description("Update the local modpack registry")
+	.action(require("./commands/Update"));
 
-};
 
-mpm(process.argv.slice(2));
+program.parse(process.argv);

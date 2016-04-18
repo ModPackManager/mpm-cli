@@ -35,74 +35,53 @@ const PROPS = [
 	}
 ];
 
-module.exports = (args) => {
+module.exports = (modpack) => {
 
-	fs.exists("modpack.json", (exists) => {
-		if (!exists) {
-			console.error("Cannot add mod to nonexistent modpack manifest");
-			process.exit(1);
-		}
-
-		var questions = PROPS.slice(0);
-
-		const mod = {};
-
-		const rl = readline.createInterface({
-			input: process.stdin,
-			output: process.stdout
-		});
-
-		InputUtils.get(0, questions, rl, (prop, answer) => {
-			if (prop.id === "strategy") {
-				mod.strategy = {};
-				mod.strategy.id = answer;
-			} else {
-				mod[prop.id] = answer;
+	MiscUtils.getCacheFile(path.join("registry", "packs", modpack + ".json"), (f) => {
+		fs.exists("modpack.json", (exists) => {
+			if (!exists) {
+				console.error("Cannot add mod to nonexistent modpack manifest");
+				process.exit(1);
 			}
-			// if (prop.id === "strategy") {
-			// 	mod.strategy = {};
-			// 	mod.strategy.id = answer;
-			// 	const strategyParams = StrategyManager.getParams(answer);
-			// 	for (var i in strategyParams) {
-			// 		questions.push(strategyParams[i]);
-			// 	}
-			// } else if (prop.id.startsWith("options.")) {
-			// 	mod.strategy.options = {};
-			// 	mod.strategy.options[prop.id.split(".")[1]] = answer;
-			// } else {
-			// 	mod[prop.id] = answer;
-			// }
-		}, () => {
 
-			const strategyOptions = StrategyManager.getParams(mod.strategy.id);
+			var questions = PROPS.slice(0);
 
-			mod.strategy.options = {};
+			const mod = {};
 
-			InputUtils.get(0, strategyOptions, rl, (prop, answer) => {
-				mod.strategy.options[prop.id] = answer;
+			const rl = readline.createInterface({
+				input: process.stdin,
+				output: process.stdout
+			});
+
+			InputUtils.get(0, questions, rl, (prop, answer) => {
+				if (prop.id === "strategy") {
+					mod.strategy = {};
+					mod.strategy.id = answer;
+				} else {
+					mod[prop.id] = answer;
+				}
 			}, () => {
-				rl.close();
 
-				fs.readFile("modpack.json", (err, data) => {
-					const modpack = JSON.parse(data.toString());
-					modpack.mods.push(mod);
-					fs.writeFile("modpack.json", JSON.stringify(modpack, null, 4), (err) => {
-						console.log("Mod added");
-					})
+				const strategyOptions = StrategyManager.getParams(mod.strategy.id);
+
+				mod.strategy.options = {};
+
+				InputUtils.get(0, strategyOptions, rl, (prop, answer) => {
+					mod.strategy.options[prop.id] = answer;
+				}, () => {
+					rl.close();
+
+					fs.readFile("modpack.json", (err, data) => {
+						const modpack = JSON.parse(data.toString());
+						modpack.mods.push(mod);
+						fs.writeFile("modpack.json", JSON.stringify(modpack, null, 4), (err) => {
+							console.log("Mod added");
+						})
+					});
 				});
 			});
 
-			// rl.close();
-
-			// fs.readFile("modpack.json", (err, data) => {
-			// 	const modpack = JSON.parse(data.toString());
-			// 	modpack.mods.push(mod);
-			// 	fs.writeFile("modpack.json", JSON.stringify(modpack, null, 4), (err) => {
-			// 		console.log("Mod added");
-			// 	});
-			// });
 		});
-
 	});
 
 };

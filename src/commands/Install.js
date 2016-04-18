@@ -4,21 +4,17 @@ const fs = require("fs");
 const path = require("path");
 const request = require("request");
 
+const MiscUtils = require("../util/MiscUtils");
 const StrategyManager = require("../strategy/StrategyManager.js");
 
-module.exports = (args) => {
-	if (args.length == 0) {
-		console.error("No modpack specified");
-		process.exit(1);
-	}
-
-	MiscUtils.getCacheFile(path.join("registry", "packs", args[0] + ".json"), (f) => {
+module.exports = (modpack, options) => {
+	MiscUtils.getCacheFile(path.join("registry", "packs", modpack + ".json"), (f) => {
 		fs.readFile(f, (err, data) => {
 			const modpack = JSON.parse(data.toString());
 
 			console.log("Installing modpack %s (%s) @ %s", modpack.displayName, modpack.id, modpack.version);
 
-			const installDir = args.length == 2 ? args[1] : ".";
+			const installDir = options.dir || ".";
 			const modsDir = path.join(installDir, "mods");
 
 			fs.mkdir(modsDir, () => {
