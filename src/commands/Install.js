@@ -19,22 +19,22 @@ module.exports = (modpack, options) => {
 
 			var clientSide = options.server || true;
 
-			fs.mkdir(modsDir, () => {
+			fs.mkdir(installDir, () => {
+				fs.mkdir(modsDir, () => {
+					for (var i in modpack.mods) {
+						const mod = modpack.mods[i];
 
-				for (var i in modpack.mods) {
-					const mod = modpack.mods[i];
+						if ((mod.clientSideOnly && clientSide) || (!mod.clientSideOnly && !clientSide)) {
+							console.log("Attempting to install mod %s", mod.name);
 
-					if ((mod.clientSideOnly && clientSide) || (!mod.clientSideOnly && !clientSide)) {
-						console.log("Attempting to install mod %s", mod.name);
-
-						if (StrategyManager.exists(mod.strategy.id)) {
-							StrategyManager.install(mod.strategy.id, mod.strategy.options, modsDir);
-						} else {
-							console.error("Couldn't install mod using strategy %s", mod.strategy.id);
+							if (StrategyManager.exists(mod.strategy.id)) {
+								StrategyManager.install(mod.strategy.id, mod.strategy.options, modsDir);
+							} else {
+								console.error("Couldn't install mod using strategy %s", mod.strategy.id);
+							}
 						}
 					}
-				}
-
+				});
 			});
 
 		});
