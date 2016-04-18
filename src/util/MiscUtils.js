@@ -33,9 +33,6 @@ function getFileNameForDownload(url, callback) {
 	request
 		.get(url)
 		.on("response", (response) => {
-			const bits = url.split("/");
-			const filename = bits[bits.length - 1];
-
 			if (response.headers.hasOwnProperty("content-disposition")) {
 
 				const bits = response.headers["content-disposition"].split(" ");
@@ -46,10 +43,10 @@ function getFileNameForDownload(url, callback) {
 						return;
 					}
 				}
-
 			}
 
-			callback(filename);
+			const bits = url.split("/");
+			callback(bits[bits.length - 1]);
 		});
 }
 exports.getFileNameForDownload = getFileNameForDownload;
